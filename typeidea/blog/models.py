@@ -78,11 +78,17 @@ class Post(models.Model):
     category=models.ForeignKey(Category,verbose_name='分类')
     tag=models.ManyToManyField(Tag,verbose_name='标签')
     owner=models.ForeignKey(User,verbose_name='作者')
+    pv=models.PositiveIntegerField(default=1)
+    uv=models.PositiveIntegerField(default=1)
 
     @classmethod
     def latest_posts(cls):
         query_set=cls.objects.filter(status=cls.STATUS_NORMAL)
         return query_set
+
+    @classmethod
+    def hot_posts(cls):
+        return cls.objects.filter(status=cls.STATUS_NORMAL).order_by('-pv')
 
     def __str__(self):
         return self.title
