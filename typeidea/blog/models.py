@@ -16,6 +16,26 @@ class Category(models.Model):
     created_time=models.DateTimeField(auto_now_add=True,verbose_name='创建时间')
     owner=models.ForeignKey(User,verbose_name='作者')
 
+    @classmethod
+    def get_navs(cls):
+        categorys=Category.objects.filter(status=cls.STATUS_NORMAL)
+        nav_category=[]
+        normal_category=[]
+        for category in categorys:
+            if category.is_nav:
+                nav_category.append(category)
+            else:
+                normal_category.append(category)
+
+        return {
+            'navs':nav_category,
+            'categories':normal_category
+        }
+
+
+    def __str__(self):
+        return self.name
+
     class Meta:
         db_table='category'
         verbose_name=verbose_name_plural='分类'
@@ -30,9 +50,12 @@ class Tag(models.Model):
         (STATUS_DELETE,'删除')
     )
     name=models.CharField(max_length=10,verbose_name='名称')
-    status=models.PositiveIntegerField(choices=STATUS_ITEM,verbose_name='名称')
+    status=models.PositiveIntegerField(default=STATUS_NORMAL,choices=STATUS_ITEM,verbose_name='名称')
     created_time=models.DateTimeField(auto_now_add=True,verbose_name='创建时间')
     owner=models.ForeignKey(User,verbose_name='作者')
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         db_table='tag'
@@ -43,8 +66,8 @@ class Post(models.Model):
     STATUS_NORMAL=1
     STATUS_DELETE=0
     STATUS_ITEM=(
-        (STATUS_DELETE,'正常'),
-        (STATUS_NORMAL,'删除')
+        (STATUS_NORMAL,'正常'),
+        (STATUS_DELETE,'删除')
     )
 
     title=models.CharField(max_length=255,verbose_name='标题')
@@ -56,10 +79,41 @@ class Post(models.Model):
     tag=models.ManyToManyField(Tag,verbose_name='标签')
     owner=models.ForeignKey(User,verbose_name='作者')
 
+    @classmethod
+    def latest_posts(cls):
+        query_set=cls.objects.filter(status=cls.STATUS_NORMAL)
+        return query_set
+
+    def __str__(self):
+        return self.title
+
     class Meta:
         db_table='post'
         verbose_name=verbose_name_plural='文章'
         ordering=['-id']
 
+    @staticmethod
+    def get_by_tag(tag_id):
+        post_list=[]
+        try:
+            tag=Tag.objects.get(id=tag_id)
+        except Tag.DoseNotExist:
+            tag=None
+        else:
+            post_list=tag.post_set.filter(status=Post.STATUS_NORMAL).select_related('owner','category')
+        return post_list,tag
+
+
+    @staticmethod
+    def get_by_category(category_id):
+        post_list = []
+        try:
+            category=Category.objects.get(category_id)
+        except Category.DoseNotExist:
+            category=None
+        else:
+            post_list=category.post_set.all().select_related('owner','category')
+
+        return post_list,category
 
 

@@ -21,7 +21,7 @@ class Link(models.Model):
         verbose_name=verbose_name_plural='友情链接'
 
 
-class Sidebars(models.Model):
+class Sidebar(models.Model):
     STATUS_SHOW=1
     STATUS_HIDE=0
     STATUS_ITEM=(
@@ -39,9 +39,14 @@ class Sidebars(models.Model):
     content=models.CharField(max_length=500,blank=True,verbose_name='内容',help_text='如果设置的不是HTML类型，可为空')
     status=models.PositiveIntegerField(default=STATUS_SHOW,choices=STATUS_ITEM,verbose_name='状态')
     owner=models.ForeignKey(User,verbose_name='作者')
+    created_time=models.DateTimeField(auto_now_add=True,verbose_name='创建时间')
+
+    @classmethod
+    def get_all(cls):
+        return cls.objects.filter(status=cls.STATUS_SHOW)
 
     class Meta:
-        db_table='sidebars'
+        db_table='sidebar'
         verbose_name=verbose_name_plural='侧边栏'
 
 
