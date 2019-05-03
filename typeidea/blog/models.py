@@ -54,6 +54,10 @@ class Tag(models.Model):
     created_time=models.DateTimeField(auto_now_add=True,verbose_name='创建时间')
     owner=models.ForeignKey(User,verbose_name='作者')
 
+    @classmethod
+    def get_tag_all(cls):
+        return cls.objects.filter(status=cls.STATUS_NORMAL)
+
     def __str__(self):
         return self.name
 
