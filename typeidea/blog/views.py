@@ -80,7 +80,7 @@ class CommonViewMixin:
 
 class IndexView(CommonViewMixin,ListView):
     queryset=Post.latest_posts()
-    paginate_by = 1
+    paginate_by = 3
     context_object_name = 'post_list'
     template_name = 'blog/list.html'
 

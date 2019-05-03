@@ -1,36 +1,85 @@
-<!DOCTYPE html>
+{% load static %}
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}首页 {% endblock %} - Typeidea</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title%}首页{% endblock %} -Typeidea</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+    <!--<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.css">-->
+    <style>
+        .post {
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 <body>
-<div>
-    顶部分类：
-    {% for cate in navs %}
-        <a href="{% url 'category-list' cate.id%}">{{cate.name}}</a>
-    {% endfor %}
-</div>
-<hr>
-{% block main %}
+<header>
+    <div class="container head">
+        <nav class="navbar  fixed-top navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/">首页</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    {% for cate in navs %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'category-list' cate.id %}">{{cate.name}}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">搜索</button>
+                </form>
+            </div>
+        </nav>
+        <div class="jumbotron">
+            <h1 class="display-4">Typeidea</h1>
+            <p class="lead">基于Django的多人博客系统</p>
+        </div>
+    </div>
+</header>
+<section>
+    <div class="container main">
+        <div class="row">
+            <div class="col-xl-9 post-list">
+                {% block main %}
 
-{% endblock %}
-<hr>
-<div>
-    底部分类：
-    {% for cate in categories %}
-        <a href="{% url 'category-list' cate.id%}">{{cate.name}}</a>
-    {% endfor %}
-    底部标签：
-    {% for tag in tags%}
-        <a href="{% url 'tag-list' tag.id%}">{{tag.name}}</a>
-    {% endfor %}
-</div>
-<div>
-    {% for sidebar in sidebars %}
-        <h4>{{sidebar.title}}</h4>
-        {{sidebar.content}}
-    {% endfor %}
-</div>
+                {% endblock %}
+
+            </div>
+            <div class="col-xl-3">
+                {% block sidebar %}
+                    {% for sidebar in sidebars %}
+                        <div class="card sidebar">
+                            <div class="card-body">
+                                <h4 class="card-title">{{sidebar.title}}</h4>
+                                <p>
+                                    {{sidebar.content_html}}
+                                </p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</section>
+<footer class="footer">
+    {% block footer %}
+    <div class="container">
+        <hr/>
+        <nav class="nav category">
+            {% for cate in categories %}
+                <a href="{% url 'category-list' cate.id %}" class="nav-link">{{cate.name}}</a>
+            {% endfor %}
+        </nav>
+    </div>
+    <div class="container power">
+        <span class="text-muted">Power by qmy</span>
+    </div>
+    {% endblock %}
+</footer>
 </body>
 </html>
