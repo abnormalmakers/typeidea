@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="result">
+    {% if succeed %}
+        评论成功！
+        <a href="{{target}}">返回</a>
+        <ul class="errorlist">
+            {% for field,msessage in form.errors.items %}
+                <li>{{message}}</li>
+            {% endfor %}
+        </ul>
+        <a href="javascript:window.history.back()">返回</a>
+    {% endif %}
+</div>
+</body>
+</html>
