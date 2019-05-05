@@ -15,7 +15,7 @@
         评论成功！
         <a href="{{target}}">返回</a>
         <ul class="errorlist">
-            {% for field,msessage in form.errors.items %}
+            {% for field,message in form.errors.items %}
                 <li>{{message}}</li>
             {% endfor %}
         </ul>

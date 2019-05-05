@@ -20,7 +20,7 @@ from comment.views import CommentView
 from typeidea.custom_site import custom_site
 from config.views import LinkListView
 from blog.views import IndexView, CategoryView, TagView, PostDetailView, SearchView, AuthorView
-from mytest.views import Mytest
+from mytest.views import MytestA,MytestB
 urlpatterns = [
     url(r'^super_admin/',admin.site.urls,name='super=admin'),
     url(r'^admin/', custom_site.urls,name='admin'),
@@ -34,5 +34,6 @@ urlpatterns +=[
     url(r'^search/$',SearchView.as_view(),name='search'),
     url(r'^author/(?P<owner_id>\d+)$',AuthorView.as_view(),name='author'),
     url(r'^comment/$',CommentView.as_view(),name='comment'),
-    url(r'^mytest',Mytest.as_view())
+    url(r'^mytesta',MytestA.as_view()),
+    url(r'^mytestb',MytestB.as_view())
 ]
