@@ -22,7 +22,7 @@ class CommentView(TemplateView):
             return redirect(target)
         else:
              succeed=False
-
+        print(succeed)
         context={
             'succeed':succeed,
             'form':comment_form,
