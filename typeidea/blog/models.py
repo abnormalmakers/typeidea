@@ -2,6 +2,8 @@ import mistune
 from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
+from django.utils.functional import cached_property
+
 
 class Category(models.Model):
     STATUS_NORMAL=1
@@ -102,6 +104,10 @@ class Post(models.Model):
     def save(self,*args,**kwargs):
         self.content_html=mistune.markdown(self.content)
         super().save(*args,**kwargs)
+
+    @cached_property
+    def tags(self):
+        return ','.join(self.tag.values_list('name',flat=True))
 
     class Meta:
         db_table='post'
