@@ -146,7 +146,6 @@ class PostDetailView(CommonViewMixin,DetailView):
         increase_pv=False
         increase_uv=False
         uid=self.request.uid
-
         pv_key="pv:%s:%s"%(uid,self.request.path)
         uv_key="uv:%s:%s:%s"%(uid,str(date.today()),self.request.path)
 
@@ -160,6 +159,7 @@ class PostDetailView(CommonViewMixin,DetailView):
             cache.set(uv_key,1,60*60*24)    #统计独立用户，一台电脑一个用户，24小时内相同客户端只计算1次
 
         if increase_pv and increase_uv:
+            # self.object即为当前网页访问的Post实例对象，即一条记录，访问的是哪篇文章
             Post.objects.filter(pk=self.object.id).update(pv=F('pv')+1,uv=F('uv')+1)
         elif increase_pv:
             Post.objects.filter(pk=self.object.id).update(pv=F('pv')+1)
