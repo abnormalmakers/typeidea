@@ -1,17 +1,11 @@
-from rest_framework import generics
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+from rest_framework import viewsets
+from rest_framework.permissions import IsAdminUser
 
-from .models import Post
-from .serializer import PostSeializer
-
-@api_view()
-def post_list(request):
-    posts=Post.objects.filter(status=Post.STATUS_NORMAL)
-    post_serializers=PostSeializer(posts,many=True)
-    return Response(post_serializers.data)
+from blog.models import Post
+from blog.serializer import PostSerializer
 
 
-class PostList(generics.ListCreateAPIView):
+class PostViewSet(viewsets.ModelViewSet):
+    serializer_class = PostSerializer
     queryset=Post.objects.filter(status=Post.STATUS_NORMAL)
-    serializer_class = PostSeializer
+    permission_classes = [IsAdminUser]

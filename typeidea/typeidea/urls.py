@@ -13,11 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.sitemaps import views as sitemap_views
+from rest_framework.routers import DefaultRouter
 
-from blog.apis import post_list, PostList
+from blog.apis import PostViewSet
 from blog.rss import LatestPostFeed
 from blog.sitemap import PostSitemap
 from comment.views import CommentView
@@ -25,6 +26,10 @@ from typeidea.custom_site import custom_site
 from config.views import LinkListView
 from blog.views import IndexView, CategoryView, TagView, PostDetailView, SearchView, AuthorView
 from mytest.views import MytestA,MytestB
+
+router=DefaultRouter()
+router.register(r'post',PostViewSet,base_name='api-post')
+
 urlpatterns = [
     url(r'^super_admin/',admin.site.urls,name='super=admin'),
     url(r'^admin/', custom_site.urls,name='admin'),
@@ -40,7 +45,8 @@ urlpatterns +=[
     url(r'^comment/$',CommentView.as_view(),name='comment'),
     url(r'^rss|feed/',LatestPostFeed(),name='rss'),
     url(r'^sitemap\.xml$',sitemap_views.sitemap,{'sitemaps':{'posts':PostSitemap}}),
-    url(r'^api/post/',post_list,name='post-list'),
+    url(r'^api/',include(router.urls,namespace='api')),
+    # url(r'^api/post/',post_list,name='post-list'),
     # url(r'^api/post/',PostList.as_view(),name='post-list'),
     url(r'^mytesta',MytestA.as_view()),
     url(r'^mytestb',MytestB.as_view())
