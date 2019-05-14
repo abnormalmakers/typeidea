@@ -19,7 +19,7 @@ from django.contrib.sitemaps import views as sitemap_views
 from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
 
-from blog.apis import PostViewSet
+from blog.apis import PostViewSet,CategoryViewSet
 from blog.rss import LatestPostFeed
 from blog.sitemap import PostSitemap
 from comment.views import CommentView
@@ -30,6 +30,7 @@ from mytest.views import MytestA,MytestB
 
 router=DefaultRouter()
 router.register(r'post',PostViewSet,base_name='api-post')
+router.register(r'category',CategoryViewSet,base_name='api-category')
 
 urlpatterns = [
     url(r'^super_admin/',admin.site.urls,name='super=admin'),
