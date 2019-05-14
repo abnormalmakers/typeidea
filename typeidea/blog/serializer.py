@@ -33,6 +33,7 @@ class PostDetailSerializer(PostSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    created_time=serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
     class Meta:
         model=Category
         fields=['id','name','created_time']
