@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Post, Category
+from .models import Post, Category, Tag
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -45,3 +45,12 @@ class CategorySerializer(serializers.ModelSerializer):
         fields=['id','name','created_time']
 
 
+class TagSerializer(serializers.ModelSerializer):
+    created_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
+    owner=serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='username'
+    )
+    class Meta:
+        model=Tag
+        fields=['id','name','created_time','owner']
