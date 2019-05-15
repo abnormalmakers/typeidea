@@ -21,9 +21,15 @@ class PostSerializer(serializers.ModelSerializer):
     )
     created_time=serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
 
+    url=serializers.HyperlinkedIdentityField(view_name='api-post-detail')
+
     class Meta:
-        model=Post
-        fields=['id','category','tag','owner','created_time']
+        model = Post
+        fields = ['url', 'id', 'title', 'category', 'tag', 'owner', 'created_time']
+        # extra_kwargs = {
+        #     'url': {'view_name': 'api-post-detail'}
+        # }
+
 
 
 class PostDetailSerializer(PostSerializer):

@@ -47,7 +47,7 @@ urlpatterns +=[
     url(r'^comment/$',CommentView.as_view(),name='comment'),
     url(r'^rss|feed/',LatestPostFeed(),name='rss'),
     url(r'^sitemap\.xml$',sitemap_views.sitemap,{'sitemaps':{'posts':PostSitemap}}),
-    url(r'^api/',include(router.urls,namespace='api')),
+    url(r'^api/',include(router.urls)),
     url(r'^api/docs/',include_docs_urls(title='typeidea.apis')),
     # url(r'^api/post/',post_list,name='post-list'),
     # url(r'^api/post/',PostList.as_view(),name='post-list'),
