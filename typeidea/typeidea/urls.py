@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.sitemaps import views as sitemap_views
+from django.views.decorators.cache import cache_page
 from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
 
@@ -47,7 +48,7 @@ urlpatterns +=[
     url(r'^author/(?P<owner_id>\d+)$',AuthorView.as_view(),name='author'),
     url(r'^comment/$',CommentView.as_view(),name='comment'),
     url(r'^rss|feed/',LatestPostFeed(),name='rss'),
-    url(r'^sitemap\.xml$',sitemap_views.sitemap,{'sitemaps':{'posts':PostSitemap}}),
+    url(r'^sitemap\.xml$',cache_page(60*20,key_prefix='sitemap_cache_')(sitemap_views.sitemap),{'sitemaps':{'posts':PostSitemap}}),
     url(r'^api/',include(router.urls)),
     url(r'^api/docs/',include_docs_urls(title='typeidea.apis')),
     # url(r'^api/post/',post_list,name='post-list'),
