@@ -19,7 +19,6 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet):
     def filter_queryset(self, queryset):
         category_id=self.request.query_params.get('category')
         tag_id=self.request.query_params.get('tag')
-        print(tag_id)
         if category_id:
             queryset=Post.objects.filter(category_id=category_id)
         elif tag_id:
