@@ -94,7 +94,7 @@ class Post(models.Model):
     def latest_posts(cls):
         query_set=cache.get('latest_posts')
         if not query_set:
-            query_set=cls.objects.filter(status=cls.STATUS_NORMAL)[:5]
+            query_set=cls.objects.filter(status=cls.STATUS_NORMAL)
             cache.set('latest_posts',query_set,60)
         return query_set
 

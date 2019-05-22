@@ -83,18 +83,14 @@ class CommonViewMixin:
 
 # 首页
 class IndexView(CommonViewMixin,ListView):
-    queryset=Post.latest_posts()
-    paginate_by = 3
+    # queryset=Post.latest_posts()
+    paginate_by = 5
     context_object_name = 'post_list'
     template_name = 'blog/list.html'
 
-    # def get_queryset(self):
-    #     #缓存文章列表
-    #     queryset=cache.get('post_list')
-    #     if not queryset:
-    #         queryset=Post.latest_posts()
-    #         cache.set('post_list',queryset,60)
-    #     return queryset
+    def get_queryset(self):
+        queryset=Post.objects.filter(status=Post.STATUS_NORMAL)
+        return queryset
 
 
 #分类页
