@@ -89,8 +89,12 @@ class IndexView(CommonViewMixin,ListView):
     template_name = 'blog/list.html'
 
     # def get_queryset(self):
-    #     posts=Post.latest_posts()
-    #     return posts
+    #     #缓存文章列表
+    #     queryset=cache.get('post_list')
+    #     if not queryset:
+    #         queryset=Post.latest_posts()
+    #         cache.set('post_list',queryset,60)
+    #     return queryset
 
 
 #分类页

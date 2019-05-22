@@ -1,4 +1,5 @@
 import mistune
+from django.core.cache import cache
 from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
@@ -91,12 +92,19 @@ class Post(models.Model):
 
     @classmethod
     def latest_posts(cls):
-        query_set=cls.objects.filter(status=cls.STATUS_NORMAL)
+        query_set=cache.get('latest_posts')
+        if not query_set:
+            query_set=cls.objects.filter(status=cls.STATUS_NORMAL)[:5]
+            cache.set('latest_posts',query_set,60)
         return query_set
 
     @classmethod
     def hot_posts(cls):
-        return cls.objects.filter(status=cls.STATUS_NORMAL).order_by('-pv')
+        result = cache.get('hot_posts')
+        if not result:
+            result=cls.objects.filter(status=cls.STATUS_NORMAL).order_by('-pv')[:5]
+            cache.set('host_posts',result,10*60)
+        return result
 
     def __str__(self):
         return self.title
