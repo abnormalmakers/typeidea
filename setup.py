@@ -2,7 +2,7 @@ from setuptools import setup,find_packages
 
 setup(
     name="typeidea",
-    version='0.1',
+    version='0.4',
     description='Blog System base on Django',
     author='qmy',
     author_email='qiaomy_shou@sina.com',
