@@ -31,7 +31,7 @@ class CategortOwnFilter(admin.SimpleListFilter):
 
 @admin.register(Category)
 class CategoryAdmin(BaseOwnerAdmin):
-    inlines=[PostInline]
+    inlines=[PostInline,]
     list_display=('name','status','is_nav','owner','created_time')
     list_filter=['name']
     fields=('name','status','is_nav')

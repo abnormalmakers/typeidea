@@ -92,18 +92,22 @@ class Post(models.Model):
 
     @classmethod
     def latest_posts(cls):
-        query_set=cache.get('latest_posts')
-        if not query_set:
-            query_set=cls.objects.filter(status=cls.STATUS_NORMAL)
-            cache.set('latest_posts',query_set,60)
+        # query_set=cache.get('latest_posts')
+        # if not query_set:
+        #     query_set=cls.objects.filter(status=cls.STATUS_NORMAL)
+        #     cache.set('latest_posts',query_set,60)
+        # return query_set
+        query_set = cls.objects.filter(status=cls.STATUS_NORMAL)
         return query_set
 
     @classmethod
     def hot_posts(cls):
-        result = cache.get('hot_posts')
-        if not result:
-            result=cls.objects.filter(status=cls.STATUS_NORMAL).order_by('-pv')[:5]
-            cache.set('host_posts',result,10*60)
+        # result = cache.get('hot_posts')
+        # if not result:
+        #     result=cls.objects.filter(status=cls.STATUS_NORMAL).order_by('-pv')[:5]
+        #     cache.set('host_posts',result,10*60)
+        # return result
+        result = cls.objects.filter(status=cls.STATUS_NORMAL).order_by('-pv')[:5]
         return result
 
     def __str__(self):
